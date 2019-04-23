@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<title>Display a map with a custom style</title>
+<title>Jesup Lake - FL</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
@@ -19,43 +19,89 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWNvZmZlciIsImEiOiJjanM1MHo0MjQwYXQwNDVtam82M
 var map = new mapboxgl.Map({
 container: 'map', // container id
 style: 'mapbox://styles/mapbox/satellite-v9', //hosted style id
-center: [-81.2023, 28.7302], // starting position
-zoom: 11.5 // starting zoom
+center: [-81.2387,28.7142], // starting position
+zoom: 13.25, // starting zoom
+pitch: 80 //camera tilt
 });
 
 map.on('load', function() {
 
    map.addSource('jesup_mask', {
        type: 'geojson',
-       data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/jesup_vect.geojson'
+       data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/FL_mask_vect_latlon'
    });
+   map.addSource('field_data_shp', {
+        type: 'geojson',
+        data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/field_data_shp.geojson'
+    });
    
 map.addLayer({
-       'id': 'jesup mask',
+       'id': 'jesup_mask',
        "type": "fill",
        "source": "jesup_mask",
        'layout': {},
        'paint': {
            'fill-color': {
-             property: 'value',
-             type: 'exponential',
+             property: 'FL_2017_data_mask',
+             type: 'categorical',
              stops: [
              [1, '#FFEC2A']
              ],
-             //   [-5,'#204098'],
-             //   [-3.5,'#3645FF'],
-             //   [-2.5, '#9FBAF0'],
-             //   [0, '#F7F7F7'],
-             //   [2.5, '#FD916E'],
-             //   [3.5, '#D83B29'],
-             //   [5, '#B2000C'],
-             //   ]
            },
-           'fill-opacity': 0.5
+           'fill-opacity': 0.2
        }
    });
 
+map.addLayer({
+        "id": "markers",
+        "interactive": true,
+        "type": "symbol",
+        "source": "field_data_shp",
+        "layout": {
+            "icon-image": "volcano-15",
+            "icon-size": 1.75
+        },
+        "paint": {
+            /*"text-size": 10,*/
+        }
+    });
+
 });
+
+map.once('style.load', function(e) {
+    // init();
+    // map.addControl(new mapboxgl.NavigationControl());
+    map.on('click', function(e) {
+        var features = map.queryRenderedFeatures(e.point, {
+            layers: ['markers']
+        });
+        if (!features.length) {
+            return;
+        }
+        var feature = features[0];
+        var popup = new mapboxgl.Popup()
+            .setLngLat(map.unproject(e.point))
+            .setHTML('<h3>Information</h3>' +
+                '<ul>' +
+                '<li>LAT: <b>' + feature.properties.LAT + '</b></li>' +
+                '<li>LON: <b>' + feature.properties.LON + '</b></li>' +
+                '<li>DO: <b>' + feature.properties.DO + '</b></li>' +
+                '<li>TN: <b>' + feature.properties.TN + '</b></li>' +
+                '<li>TP: <b>' + feature.properties.TP + '</b></li>' +
+                '<li>SECCHI: <b>' + feature.properties.SECCHI + '</b></li>' +
+                '<li>TURBIDITY: <b>' + feature.properties.TURBIDITY + '</b></li>' +
+                '</ul>')
+            .addTo(map);
+    map.on('mousemove', function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['markers']
+    });
+    map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+    });
+       
+    });
+    
+  });
 
 </script>
  
