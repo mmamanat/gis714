@@ -1,9 +1,9 @@
 {
 "type": "FeatureCollection",
 "features": [
-{ "type": "Feature", "id": 1, "properties": { "LAT": 28.7149, "LON": -81.2775, "DO": 9.7, "TN": 2956.1, "TP": 190.9, "SECCHI": 10.6332, "TURBIDITY": 18.0175 }, "geometry": { "type": "Point", "coordinates": [ 28.7149, -81.2775 ] } },
-{ "type": "Feature", "id": 2, "properties": { "LAT": 28.7053, "LON": -81.254, "DO": 9.69, "TN": 3203.1, "TP": 194.7, "SECCHI": 12.1309, "TURBIDITY": 18.3308 }, "geometry": { "type": "Point", "coordinates": [ 28.7053, -81.254 ] } },
-{ "type": "Feature", "id": 3, "properties": { "LAT": 28.7242, "LON": -81.2147, "DO": null, "TN": 2720.0, "TP": 136.0, "SECCHI": 0.8, "TURBIDITY": null }, "geometry": { "type": "Point", "coordinates": [ 28.7242, -81.2147 ] } },
-{ "type": "Feature", "id": 4, "properties": { "LAT": 28.7648, "LON": -81.1763, "DO": 8.85, "TN": 0.9514, "TP": 7.83, "SECCHI": 16.7063, "TURBIDITY": 3.8972 }, "geometry": { "type": "Point", "coordinates": [ 28.7648, -81.1763 ] } }
+{ "type": "Feature", "id": 1, "properties": { "LAT": 28.7149, "LON": -81.2775, "DO": 9.7, "TN": 2956.1, "TP": 190.9, "SECCHI": 10.6332, "TURBIDITY": 18.0175 }, "geometry": { "type": "Point", "coordinates": [ -81.2775, 28.7149 ] } },
+{ "type": "Feature", "id": 2, "properties": { "LAT": 28.7053, "LON": -81.254, "DO": 9.69, "TN": 3203.1, "TP": 194.7, "SECCHI": 12.1309, "TURBIDITY": 18.3308 }, "geometry": { "type": "Point", "coordinates": [ -81.254, 28.7053 ] } },
+{ "type": "Feature", "id": 3, "properties": { "LAT": 28.7242, "LON": -81.2147, "DO": null, "TN": 2720.0, "TP": 136.0, "SECCHI": 0.8, "TURBIDITY": null }, "geometry": { "type": "Point", "coordinates": [ -81.2147, 28.7242 ] } },
+{ "type": "Feature", "id": 4, "properties": { "LAT": 28.7648, "LON": -81.1763, "DO": 8.85, "TN": 0.9514, "TP": 7.83, "SECCHI": 16.7063, "TURBIDITY": 3.8972 }, "geometry": { "type": "Point", "coordinates": [ -81.1763, 28.7648 ] } }
 ]
 }
