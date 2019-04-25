@@ -2,17 +2,60 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<title>Lake Jesup - FL</title>
+<title>Jesup Lake - FL</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
 <style>
 body { margin:0; padding:0; }
 #map { position:absolute; top:0; bottom:0; width:100%; }
+
+#menu {
+background: #fff;
+position: absolute;
+z-index: 1;
+top: 10px;
+right: 10px;
+border-radius: 3px;
+width: 120px;
+border: 1px solid rgba(0,0,0,0.4);
+font-family: 'Open Sans', sans-serif;
+}
+ 
+#menu a {
+font-size: 13px;
+color: #404040;
+display: block;
+margin: 0;
+padding: 0;
+padding: 10px;
+text-decoration: none;
+border-bottom: 1px solid rgba(0,0,0,0.25);
+text-align: center;
+}
+ 
+#menu a:last-child {
+border: none;
+}
+ 
+#menu a:hover {
+background-color: #f8f8f8;
+color: #404040;
+}
+ 
+#menu a.active {
+background-color: #3887be;
+color: #ffffff;
+}
+ 
+#menu a.active:hover {
+background: #3074a4;
+}
 </style>
 </head>
 <body>
- 
+
+<nav id="menu"></nav>
 <div id='map'></div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoibWNvZmZlciIsImEiOiJjanM1MHo0MjQwYXQwNDVtam82M3ZndjlnIn0.xVwrmL41-_YuQKdxSnj38w';
@@ -26,26 +69,128 @@ pitch: 80 //camera tilt
 
 map.on('load', function() {
 
-   map.addSource('jesup_mask', {
+   // RASTERS
+   map.addSource('do_rast1', {
        type: 'geojson',
-       data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/FL_mask_vect_latlon'
+       data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/do_rast1'
    });
+   map.addSource('secchi_rast1', {
+       type: 'geojson',
+       data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/secchi_rast1.geojson'
+   });
+   map.addSource('tn_rast1', {
+       type: 'geojson',
+       data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/tn_rast1.geojson'
+   });
+   map.addSource('tp_rast1', {
+       type: 'geojson',
+       data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/tp_rast1.geojson'
+   });
+   map.addSource('turb_rast1', {
+       type: 'geojson',
+       data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/turb_rast1.geojson'
+   });
+   // FIELD DATA
    map.addSource('field_data_shp', {
         type: 'geojson',
         data: 'https://raw.githubusercontent.com/mmamanat/gis714/master/rasters/field_data_shp.geojson'
     });
    
 map.addLayer({
-       'id': 'jesup_mask',
+       'id': 'do_rast1',
        "type": "fill",
-       "source": "jesup_mask",
+       "source": "do_rast1",
        'layout': {},
        'paint': {
            'fill-color': {
-             property: 'FL_2017_data_mask',
-             type: 'categorical',
+             property: 'do_rast1',
+             type: 'exponential',
              stops: [
-             [1, '#FFEC2A']
+             [8.312620, '#edf8fb'],
+             [8.656304, '#b2e2e2'],
+             [8.7, '#66c2a4'],
+             [8.9, '#2ca25f'],
+             [9.119719, '#006d2c']
+             ],
+           },
+           'fill-opacity': 0.2
+       }
+   });
+map.addLayer({
+       'id': 'secchi_rast1',
+       "type": "fill",
+       "source": "secchi_rast1",
+       'layout': {},
+       'paint': {
+           'fill-color': {
+             property: 'secchi_rast1',
+             type: 'exponential',
+             stops: [
+             [0.99, '#edf8fb'],
+             [1.20, '#b3cde3'],
+             [1.40, '#8c96c6'],
+             [1.60, '#8856a7'],
+             [1.9207659, '#810f7c']
+             ],
+           },
+           'fill-opacity': 0.2
+       }
+   });
+map.addLayer({
+       'id': 'tn_rast1',
+       "type": "fill",
+       "source": "tn_rast1",
+       'layout': {},
+       'paint': {
+           'fill-color': {
+             property: 'tn_rast1',
+             type: 'exponential',
+             stops: [
+             [1208.936, '#fee5d9'],
+             [1376.194, '#fcae91'],
+             [1440.157, '#fb6a4a'],
+             [1496.314, '#de2d26'],
+             [1725.689, '#a50f15']
+             ],
+           },
+           'fill-opacity': 0.2
+       }
+   });
+map.addLayer({
+       'id': 'tp_rast1',
+       "type": "fill",
+       "source": "tp_rast1",
+       'layout': {},
+       'paint': {
+           'fill-color': {
+             property: 'tp_rast1',
+             type: 'exponential',
+             stops: [
+             [60.41227, '#eff3ff'],
+             [82.16046, '#bdd7e7'],
+             [90.48608, '#6baed6'],
+             [97.38071, '#3182bd'],
+             [116.46614, '#08519c']
+             ],
+           },
+           'fill-opacity': 0.2
+       }
+   });
+map.addLayer({
+       'id': 'turb_rast1',
+       "type": "fill",
+       "source": "turb_rast1",
+       'layout': {},
+       'paint': {
+           'fill-color': {
+             property: 'turb_rast1',
+             type: 'exponential',
+             stops: [
+             [1.257109, '#ffffd4'],
+             [4.695155, '#fed98e'],
+             [5.597413, '#fe9929'],
+             [6.493543, '#d95f0e'],
+             [9.342158, '#993404']
              ],
            },
            'fill-opacity': 0.2
@@ -102,6 +247,38 @@ map.once('style.load', function(e) {
     });
     
   });
+
+
+const toggleableLayerIds = [ 'do_rast1', 'secchi_rast1', 'tn_rast1', 'tp_rast1', 'turb_rast1' ];
+
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
+
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    };
+
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+}
+
 
 </script>
  
